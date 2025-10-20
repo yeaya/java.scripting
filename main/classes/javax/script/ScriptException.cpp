@@ -81,6 +81,7 @@ void ScriptException::init$($String* message, $String* fileName, int32_t lineNum
 }
 
 $String* ScriptException::getMessage() {
+	$useLocalCurrentObjectStackCache();
 	$var($String, ret, $Exception::getMessage());
 	if (this->fileName != nullptr) {
 		$plusAssign(ret, ($$str({" in "_s, this->fileName})));

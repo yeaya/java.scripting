@@ -442,6 +442,7 @@ $Object* allocate$ScriptEngineManager($Class* clazz) {
 $Comparator* ScriptEngineManager::COMPARATOR = nullptr;
 
 void ScriptEngineManager::init$() {
+	$useLocalCurrentObjectStackCache();
 	$beforeCallerSensitive();
 	ScriptEngineManager::init$($($($Thread::currentThread())->getContextClassLoader()));
 }
@@ -467,6 +468,7 @@ $ServiceLoader* ScriptEngineManager::getServiceLoader($ClassLoader* loader) {
 }
 
 void ScriptEngineManager::initEngines($ClassLoader* loader) {
+	$useLocalCurrentObjectStackCache();
 	$beforeCallerSensitive();
 	$var($Iterator, itr, nullptr);
 	try {
@@ -525,6 +527,7 @@ $ScriptEngine* ScriptEngineManager::getEngineByMimeType($String* mimeType) {
 }
 
 $ScriptEngine* ScriptEngineManager::getEngineBy($String* selector, $Map* associations, $Function* valuesFn) {
+	$useLocalCurrentObjectStackCache();
 	$Objects::requireNonNull(selector);
 	$var($Stream, var$0, $Stream::ofNullable($cast($ScriptEngineFactory, $($nc(associations)->get(selector)))));
 	$var($Stream, spis, $Stream::concat(var$0, $($nc($($nc(this->engineSpis)->stream()))->filter(static_cast<$Predicate*>($$new(ScriptEngineManager$$Lambda$lambda$getEngineBy$1$5, valuesFn, selector))))));
@@ -533,6 +536,7 @@ $ScriptEngine* ScriptEngineManager::getEngineBy($String* selector, $Map* associa
 
 void ScriptEngineManager::reportException($String* msg, $Throwable* exp) {
 	$init(ScriptEngineManager);
+	$useLocalCurrentObjectStackCache();
 	$init($System);
 	$nc($System::err)->println($$str({msg, $($nc(exp)->getMessage())}));
 	debugPrint(exp);
@@ -567,6 +571,7 @@ void ScriptEngineManager::associateFactory($Map* associations, $String* associat
 }
 
 $ScriptEngine* ScriptEngineManager::lambda$getEngineBy$2($ScriptEngineFactory* spi) {
+	$useLocalCurrentObjectStackCache();
 	try {
 		$var($ScriptEngine, engine, $nc(spi)->getScriptEngine());
 		$nc(engine)->setBindings($(getBindings()), $ScriptContext::GLOBAL_SCOPE);
@@ -581,6 +586,7 @@ $ScriptEngine* ScriptEngineManager::lambda$getEngineBy$2($ScriptEngineFactory* s
 
 bool ScriptEngineManager::lambda$getEngineBy$1($Function* valuesFn, $String* selector, $ScriptEngineFactory* spi) {
 	$init(ScriptEngineManager);
+	$useLocalCurrentObjectStackCache();
 	try {
 		$var($List, matches, $cast($List, $nc(valuesFn)->apply(spi)));
 		return matches != nullptr && matches->contains(selector);
@@ -597,6 +603,7 @@ $ServiceLoader* ScriptEngineManager::lambda$initEngines$0($ClassLoader* loader) 
 }
 
 void clinit$ScriptEngineManager($Class* class$) {
+	$useLocalCurrentObjectStackCache();
 	$var($Function, var$0, static_cast<$Function*>($new(ScriptEngineManager$$Lambda$getEngineName)));
 	$assignStatic(ScriptEngineManager::COMPARATOR, $Comparator::comparing(var$0, $($Comparator::nullsLast($($Comparator::naturalOrder())))));
 }

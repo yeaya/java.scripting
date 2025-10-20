@@ -55,6 +55,7 @@ void CompiledScript::init$() {
 }
 
 $Object* CompiledScript::eval($Bindings* bindings) {
+	$useLocalCurrentObjectStackCache();
 	$var($ScriptContext, ctxt, $nc($(getEngine()))->getContext());
 	if (bindings != nullptr) {
 		$var($Reader, var$0, $nc(ctxt)->getReader());
@@ -68,6 +69,7 @@ $Object* CompiledScript::eval($Bindings* bindings) {
 }
 
 $Object* CompiledScript::eval() {
+	$useLocalCurrentObjectStackCache();
 	return $of(eval($($nc($(getEngine()))->getContext())));
 }
 

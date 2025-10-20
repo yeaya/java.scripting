@@ -80,6 +80,7 @@ void Main$3::init$($ScriptEngine* val$se, $String* val$source) {
 }
 
 void Main$3::run($StringArray* args) {
+	$useLocalCurrentObjectStackCache();
 	$Main::setScriptArguments(this->val$se, args);
 	$var($String, oldFile, $Main::setScriptFilename(this->val$se, "<string>"_s));
 	{

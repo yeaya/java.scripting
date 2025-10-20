@@ -211,6 +211,7 @@ void Main::init$() {
 
 void Main::main($StringArray* args) {
 	$init(Main);
+	$useLocalCurrentObjectStackCache();
 	$var($StringArray, scriptArgs, processOptions(args));
 	{
 		$var($Iterator, i$, $nc(Main::scripts)->iterator());
@@ -226,6 +227,7 @@ void Main::main($StringArray* args) {
 
 $StringArray* Main::processOptions($StringArray* args) {
 	$init(Main);
+	$useLocalCurrentObjectStackCache();
 	$var($String, currentLanguage, Main::DEFAULT_LANGUAGE);
 	$var($String, currentEncoding, nullptr);
 	checkClassPath(args);
@@ -339,6 +341,7 @@ void Main::addStringSource($ScriptEngine* se, $String* source) {
 
 void Main::listScriptEngines() {
 	$init(Main);
+	$useLocalCurrentObjectStackCache();
 	$var($List, factories, $nc(Main::engineManager)->getEngineFactories());
 	{
 		$var($Iterator, i$, $nc(factories)->iterator());
@@ -359,6 +362,7 @@ void Main::listScriptEngines() {
 
 void Main::processSource($ScriptEngine* se, $String* filename, $String* encoding) {
 	$init(Main);
+	$useLocalCurrentObjectStackCache();
 	if ($nc(filename)->equals("-"_s)) {
 		$var($BufferedReader, in, $new($BufferedReader, $$new($InputStreamReader, $(getIn()))));
 		bool hitEOF = false;
@@ -402,6 +406,7 @@ void Main::processSource($ScriptEngine* se, $String* filename, $String* encoding
 
 $Object* Main::evaluateString($ScriptEngine* se, $String* script, bool exitOnError) {
 	$init(Main);
+	$useLocalCurrentObjectStackCache();
 	try {
 		return $of($nc(se)->eval(script));
 	} catch ($ScriptException&) {
@@ -427,6 +432,7 @@ void Main::evaluateString($ScriptEngine* se, $String* script) {
 
 $Object* Main::evaluateReader($ScriptEngine* se, $Reader* reader, $String* name) {
 	$init(Main);
+	$useLocalCurrentObjectStackCache();
 	$var($String, oldFilename, setScriptFilename(se, name));
 	{
 		$var($Throwable, var$0, nullptr);
@@ -466,6 +472,7 @@ $Object* Main::evaluateReader($ScriptEngine* se, $Reader* reader, $String* name)
 
 $Object* Main::evaluateStream($ScriptEngine* se, $InputStream* is, $String* name, $String* encoding) {
 	$init(Main);
+	$useLocalCurrentObjectStackCache();
 	$var($BufferedReader, reader, nullptr);
 	if (encoding != nullptr) {
 		try {
@@ -483,12 +490,14 @@ $Object* Main::evaluateStream($ScriptEngine* se, $InputStream* is, $String* name
 
 void Main::usage(int32_t exitCode) {
 	$init(Main);
+	$useLocalCurrentObjectStackCache();
 	$nc($(getError()))->println($(getMessage("main.usage"_s, $$new($ObjectArray, {$of(Main::PROGRAM_NAME)}))));
 	$System::exit(exitCode);
 }
 
 $String* Main::getPrompt($ScriptEngine* se) {
 	$init(Main);
+	$useLocalCurrentObjectStackCache();
 	$var($List, names, $nc($($nc(se)->getFactory()))->getNames());
 	return $str({$cast($String, $($nc(names)->get(0))), "> "_s});
 }
@@ -512,6 +521,7 @@ $PrintStream* Main::getError() {
 
 $ScriptEngine* Main::getScriptEngine($String* lang) {
 	$init(Main);
+	$useLocalCurrentObjectStackCache();
 	$var($ScriptEngine, se, $cast($ScriptEngine, $nc(Main::engines)->get(lang)));
 	if (se == nullptr) {
 		$assign(se, $nc(Main::engineManager)->getEngineByName(lang));
@@ -527,6 +537,7 @@ $ScriptEngine* Main::getScriptEngine($String* lang) {
 
 void Main::initScriptEngine($ScriptEngine* se) {
 	$init(Main);
+	$useLocalCurrentObjectStackCache();
 	$beforeCallerSensitive();
 	$nc(se)->put("engine"_s, se);
 	$var($List, exts, $nc($(se->getFactory()))->getExtensions());
@@ -556,6 +567,7 @@ void Main::initScriptEngine($ScriptEngine* se) {
 
 void Main::checkClassPath($StringArray* args) {
 	$init(Main);
+	$useLocalCurrentObjectStackCache();
 	$var($String, classPath, nullptr);
 	for (int32_t i = 0; i < $nc(args)->length; ++i) {
 		bool var$0 = $nc(args->get(i))->equals("-classpath"_s);
@@ -577,6 +589,7 @@ void Main::checkClassPath($StringArray* args) {
 
 $URLArray* Main::pathToURLs($String* path) {
 	$init(Main);
+	$useLocalCurrentObjectStackCache();
 	$init($File);
 	$var($StringArray, components, $nc(path)->split($File::pathSeparator));
 	$var($URLArray, urls, $new($URLArray, components->length));
@@ -597,6 +610,7 @@ $URLArray* Main::pathToURLs($String* path) {
 
 $URL* Main::fileToURL($File* file) {
 	$init(Main);
+	$useLocalCurrentObjectStackCache();
 	$var($String, name, nullptr);
 	try {
 		$assign(name, $nc(file)->getCanonicalPath());

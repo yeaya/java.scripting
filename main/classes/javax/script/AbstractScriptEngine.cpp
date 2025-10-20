@@ -146,6 +146,7 @@ $Object* AbstractScriptEngine::eval($String* script) {
 }
 
 $ScriptContext* AbstractScriptEngine::getScriptContext($Bindings* nn) {
+	$useLocalCurrentObjectStackCache();
 	$var($Reader, var$0, $nc(this->context)->getReader());
 	$var($Writer, var$1, $nc(this->context)->getWriter());
 	$var($SimpleScriptContext, ctxt, $new($SimpleScriptContext, var$0, var$1, $($nc(this->context)->getErrorWriter())));

@@ -89,6 +89,7 @@ $Object* SimpleBindings::put($String* name, Object$* value) {
 }
 
 void SimpleBindings::putAll($Map* toMerge) {
+	$useLocalCurrentObjectStackCache();
 	$Objects::requireNonNull($of(toMerge), "toMerge map is null"_s);
 	{
 		$var($Iterator, i$, $nc($($nc(toMerge)->entrySet()))->iterator());

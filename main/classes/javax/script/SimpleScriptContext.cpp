@@ -99,6 +99,7 @@ $Object* allocate$SimpleScriptContext($Class* clazz) {
 $List* SimpleScriptContext::scopes = nullptr;
 
 void SimpleScriptContext::init$() {
+	$useLocalCurrentObjectStackCache();
 	$init($System);
 	$var($Reader, var$0, static_cast<$Reader*>($new($InputStreamReader, $System::in)));
 	$var($Writer, var$1, static_cast<$Writer*>($new($PrintWriter, static_cast<$OutputStream*>($System::out), true)));
@@ -167,6 +168,7 @@ $Object* SimpleScriptContext::getAttribute($String* name, int32_t scope) {
 }
 
 $Object* SimpleScriptContext::removeAttribute($String* name, int32_t scope) {
+	$useLocalCurrentObjectStackCache();
 	checkName(name);
 	switch (scope) {
 	case $ScriptContext::ENGINE_SCOPE:
@@ -269,6 +271,7 @@ void SimpleScriptContext::checkName($String* name) {
 }
 
 void clinit$SimpleScriptContext($Class* class$) {
+	$useLocalCurrentObjectStackCache();
 	$var($Object, var$0, $of($Integer::valueOf($ScriptContext::ENGINE_SCOPE)));
 	$assignStatic(SimpleScriptContext::scopes, $List::of(var$0, $($Integer::valueOf($ScriptContext::GLOBAL_SCOPE))));
 }
