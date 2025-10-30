@@ -1,17 +1,6 @@
 #include <com/sun/tools/script/shell/Main$3.h>
 
 #include <com/sun/tools/script/shell/Main.h>
-#include <java/lang/Array.h>
-#include <java/lang/Class.h>
-#include <java/lang/ClassInfo.h>
-#include <java/lang/EnclosingMethodInfo.h>
-#include <java/lang/FieldInfo.h>
-#include <java/lang/InnerClassInfo.h>
-#include <java/lang/MethodInfo.h>
-#include <java/lang/String.h>
-#include <java/lang/Throwable.h>
-#include <java/lang/reflect/Constructor.h>
-#include <java/lang/reflect/Method.h>
 #include <javax/script/ScriptEngine.h>
 #include <jcpp.h>
 
@@ -87,8 +76,8 @@ void Main$3::run($StringArray* args) {
 		$var($Throwable, var$0, nullptr);
 		try {
 			$Main::evaluateString(this->val$se, this->val$source);
-		} catch ($Throwable&) {
-			$assign(var$0, $catch());
+		} catch ($Throwable& var$1) {
+			$assign(var$0, var$1);
 		} /*finally*/ {
 			$Main::setScriptFilename(this->val$se, oldFile);
 		}

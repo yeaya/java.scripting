@@ -25,8 +25,10 @@ public:
 	int32_t lineNumber = 0;
 	int32_t columnNumber = 0;
 	ScriptException(const ScriptException& e);
-	ScriptException wrapper$();
-	virtual void throwWrapper$() override;
+	virtual void throw$() override;
+	inline ScriptException* operator ->() {
+		return (ScriptException*)throwing$;
+	}
 };
 
 	} // script

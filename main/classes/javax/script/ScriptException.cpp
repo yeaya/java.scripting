@@ -1,14 +1,5 @@
 #include <javax/script/ScriptException.h>
 
-#include <java/lang/Class.h>
-#include <java/lang/ClassInfo.h>
-#include <java/lang/Exception.h>
-#include <java/lang/FieldInfo.h>
-#include <java/lang/MethodInfo.h>
-#include <java/lang/String.h>
-#include <java/lang/Throwable.h>
-#include <java/lang/reflect/Constructor.h>
-#include <java/lang/reflect/Method.h>
 #include <jcpp.h>
 
 using $ClassInfo = ::java::lang::ClassInfo;
@@ -110,16 +101,10 @@ $String* ScriptException::getFileName() {
 ScriptException::ScriptException() {
 }
 
-ScriptException::ScriptException(const ScriptException& e) {
+ScriptException::ScriptException(const ScriptException& e) : $Exception(e) {
 }
 
-ScriptException ScriptException::wrapper$() {
-	$pendingException(this);
-	return *this;
-}
-
-void ScriptException::throwWrapper$() {
-	$pendingException(this);
+void ScriptException::throw$() {
 	throw *this;
 }
 

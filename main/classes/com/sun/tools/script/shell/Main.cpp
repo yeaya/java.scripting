@@ -11,26 +11,10 @@
 #include <java/io/IOException.h>
 #include <java/io/InputStream.h>
 #include <java/io/InputStreamReader.h>
-#include <java/io/PrintStream.h>
 #include <java/io/Reader.h>
 #include <java/io/UnsupportedEncodingException.h>
-#include <java/lang/Array.h>
-#include <java/lang/Class.h>
-#include <java/lang/ClassInfo.h>
 #include <java/lang/ClassLoader.h>
-#include <java/lang/Exception.h>
-#include <java/lang/FieldInfo.h>
-#include <java/lang/IllegalArgumentException.h>
-#include <java/lang/InnerClassInfo.h>
-#include <java/lang/MethodInfo.h>
 #include <java/lang/Module.h>
-#include <java/lang/RuntimeException.h>
-#include <java/lang/String.h>
-#include <java/lang/System.h>
-#include <java/lang/Thread.h>
-#include <java/lang/Throwable.h>
-#include <java/lang/reflect/Constructor.h>
-#include <java/lang/reflect/Method.h>
 #include <java/net/MalformedURLException.h>
 #include <java/net/URL.h>
 #include <java/net/URLClassLoader.h>
@@ -374,8 +358,7 @@ void Main::processSource($ScriptEngine* se, $String* filename, $String* encoding
 			$var($String, source, ""_s);
 			try {
 				$assign(source, in->readLine());
-			} catch ($IOException&) {
-				$var($IOException, ioe, $catch());
+			} catch ($IOException& ioe) {
 				$nc($(getError()))->println($(ioe->toString()));
 			}
 			if (source == nullptr) {
@@ -395,8 +378,7 @@ void Main::processSource($ScriptEngine* se, $String* filename, $String* encoding
 		$var($FileInputStream, fis, nullptr);
 		try {
 			$assign(fis, $new($FileInputStream, filename));
-		} catch ($FileNotFoundException&) {
-			$var($FileNotFoundException, fnfe, $catch());
+		} catch ($FileNotFoundException& fnfe) {
 			$nc($(getError()))->println($(getMessage("file.not.found"_s, $$new($ObjectArray, {$of(filename)}))));
 			$System::exit(Main::EXIT_FILE_NOT_FOUND);
 		}
@@ -409,14 +391,12 @@ $Object* Main::evaluateString($ScriptEngine* se, $String* script, bool exitOnErr
 	$useLocalCurrentObjectStackCache();
 	try {
 		return $of($nc(se)->eval(script));
-	} catch ($ScriptException&) {
-		$var($ScriptException, sexp, $catch());
+	} catch ($ScriptException& sexp) {
 		$nc($(getError()))->println($(getMessage("string.script.error"_s, $$new($ObjectArray, {$($of(sexp->getMessage()))}))));
 		if (exitOnError) {
 			$System::exit(Main::EXIT_SCRIPT_ERROR);
 		}
-	} catch ($Exception&) {
-		$var($Exception, exp, $catch());
+	} catch ($Exception& exp) {
 		exp->printStackTrace($(getError()));
 		if (exitOnError) {
 			$System::exit(Main::EXIT_SCRIPT_ERROR);
@@ -443,20 +423,18 @@ $Object* Main::evaluateReader($ScriptEngine* se, $Reader* reader, $String* name)
 				$assign(var$2, $nc(se)->eval(reader));
 				return$1 = true;
 				goto $finally;
-			} catch ($ScriptException&) {
-				$var($ScriptException, sexp, $catch());
+			} catch ($ScriptException& sexp) {
 				$nc($(getError()))->println($(getMessage("file.script.error"_s, $$new($ObjectArray, {
 					$of(name),
 					$($of(sexp->getMessage()))
 				}))));
 				$System::exit(Main::EXIT_SCRIPT_ERROR);
-			} catch ($Exception&) {
-				$var($Exception, exp, $catch());
+			} catch ($Exception& exp) {
 				exp->printStackTrace($(getError()));
 				$System::exit(Main::EXIT_SCRIPT_ERROR);
 			}
-		} catch ($Throwable&) {
-			$assign(var$0, $catch());
+		} catch ($Throwable& var$3) {
+			$assign(var$0, var$3);
 		} $finally: {
 			setScriptFilename(se, oldFilename);
 		}
@@ -477,8 +455,7 @@ $Object* Main::evaluateStream($ScriptEngine* se, $InputStream* is, $String* name
 	if (encoding != nullptr) {
 		try {
 			$assign(reader, $new($BufferedReader, $$new($InputStreamReader, is, encoding)));
-		} catch ($UnsupportedEncodingException&) {
-			$var($UnsupportedEncodingException, uee, $catch());
+		} catch ($UnsupportedEncodingException& uee) {
 			$nc($(getError()))->println($(getMessage("encoding.unsupported"_s, $$new($ObjectArray, {$of(encoding)}))));
 			$System::exit(Main::EXIT_NO_ENCODING_FOUND);
 		}
@@ -509,13 +486,11 @@ $String* Main::getMessage($String* key, $ObjectArray* params) {
 
 $InputStream* Main::getIn() {
 	$init(Main);
-	$init($System);
 	return $System::in;
 }
 
 $PrintStream* Main::getError() {
 	$init(Main);
-	$init($System);
 	return $System::err;
 }
 
@@ -550,8 +525,7 @@ void Main::initScriptEngine($ScriptEngine* se) {
 			{
 				try {
 					$assign(sysIn, $nc($(Main::class$->getModule()))->getResourceAsStream($$str({"com/sun/tools/script/shell/init."_s, ext})));
-				} catch ($IOException&) {
-					$var($IOException, ioe, $catch());
+				} catch ($IOException& ioe) {
 					$throwNew($RuntimeException, static_cast<$Throwable*>(ioe));
 				}
 				if (sysIn != nullptr) {
@@ -610,12 +584,10 @@ $URLArray* Main::pathToURLs($String* path) {
 
 $URL* Main::fileToURL($File* file) {
 	$init(Main);
-	$useLocalCurrentObjectStackCache();
 	$var($String, name, nullptr);
 	try {
 		$assign(name, $nc(file)->getCanonicalPath());
-	} catch ($IOException&) {
-		$var($IOException, e, $catch());
+	} catch ($IOException& e) {
 		$assign(name, $nc(file)->getAbsolutePath());
 	}
 	$init($File);
@@ -628,8 +600,7 @@ $URL* Main::fileToURL($File* file) {
 	}
 	try {
 		return $new($URL, "file"_s, ""_s, name);
-	} catch ($MalformedURLException&) {
-		$var($MalformedURLException, e, $catch());
+	} catch ($MalformedURLException& e) {
 		$throwNew($IllegalArgumentException, "file"_s);
 	}
 	$shouldNotReachHere();

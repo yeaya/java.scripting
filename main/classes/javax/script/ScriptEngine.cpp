@@ -1,13 +1,6 @@
 #include <javax/script/ScriptEngine.h>
 
 #include <java/io/Reader.h>
-#include <java/lang/Class.h>
-#include <java/lang/ClassInfo.h>
-#include <java/lang/FieldInfo.h>
-#include <java/lang/MethodInfo.h>
-#include <java/lang/String.h>
-#include <java/lang/reflect/Constructor.h>
-#include <java/lang/reflect/Method.h>
 #include <javax/script/Bindings.h>
 #include <javax/script/ScriptContext.h>
 #include <javax/script/ScriptEngineFactory.h>
@@ -74,19 +67,12 @@ $Object* allocate$ScriptEngine($Class* clazz) {
 	return $of($alloc(ScriptEngine));
 }
 
-
 $String* ScriptEngine::ARGV = nullptr;
-
 $String* ScriptEngine::FILENAME = nullptr;
-
 $String* ScriptEngine::ENGINE = nullptr;
-
 $String* ScriptEngine::ENGINE_VERSION = nullptr;
-
 $String* ScriptEngine::NAME = nullptr;
-
 $String* ScriptEngine::LANGUAGE = nullptr;
-
 $String* ScriptEngine::LANGUAGE_VERSION = nullptr;
 
 void clinit$ScriptEngine($Class* class$) {

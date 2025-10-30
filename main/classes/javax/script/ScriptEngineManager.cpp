@@ -1,29 +1,13 @@
 #include <javax/script/ScriptEngineManager.h>
 
-#include <java/io/PrintStream.h>
 #include <java/io/Serializable.h>
-#include <java/lang/Array.h>
-#include <java/lang/Boolean.h>
-#include <java/lang/Class.h>
-#include <java/lang/ClassInfo.h>
 #include <java/lang/ClassLoader.h>
 #include <java/lang/Error.h>
-#include <java/lang/Exception.h>
-#include <java/lang/FieldInfo.h>
-#include <java/lang/IllegalArgumentException.h>
-#include <java/lang/MethodInfo.h>
-#include <java/lang/NullPointerException.h>
-#include <java/lang/String.h>
-#include <java/lang/System.h>
-#include <java/lang/Thread.h>
-#include <java/lang/Throwable.h>
 #include <java/lang/invoke/CallSite.h>
 #include <java/lang/invoke/LambdaMetafactory.h>
 #include <java/lang/invoke/MethodHandle.h>
 #include <java/lang/invoke/MethodHandles$Lookup.h>
 #include <java/lang/invoke/MethodType.h>
-#include <java/lang/reflect/Constructor.h>
-#include <java/lang/reflect/Method.h>
 #include <java/security/AccessController.h>
 #include <java/security/PrivilegedAction.h>
 #include <java/util/AbstractCollection.h>
@@ -474,8 +458,7 @@ void ScriptEngineManager::initEngines($ClassLoader* loader) {
 	try {
 		$var($ServiceLoader, sl, $cast($ServiceLoader, $AccessController::doPrivileged(static_cast<$PrivilegedAction*>($$new(ScriptEngineManager$$Lambda$lambda$initEngines$0$1, this, loader)))));
 		$assign(itr, $nc(sl)->iterator());
-	} catch ($ServiceConfigurationError&) {
-		$var($ServiceConfigurationError, err, $catch());
+	} catch ($ServiceConfigurationError& err) {
 		reportException("Can\'t find ScriptEngineFactory providers: "_s, err);
 		return;
 	}
@@ -484,13 +467,11 @@ void ScriptEngineManager::initEngines($ClassLoader* loader) {
 			try {
 				$var($ScriptEngineFactory, fact, $cast($ScriptEngineFactory, itr->next()));
 				$nc(this->engineSpis)->add(fact);
-			} catch ($ServiceConfigurationError&) {
-				$var($ServiceConfigurationError, err, $catch());
+			} catch ($ServiceConfigurationError& err) {
 				reportException("ScriptEngineManager providers.next(): "_s, err);
 			}
 		}
-	} catch ($ServiceConfigurationError&) {
-		$var($ServiceConfigurationError, err, $catch());
+	} catch ($ServiceConfigurationError& err) {
 		reportException("ScriptEngineManager providers.hasNext(): "_s, err);
 	}
 }
@@ -537,7 +518,6 @@ $ScriptEngine* ScriptEngineManager::getEngineBy($String* selector, $Map* associa
 void ScriptEngineManager::reportException($String* msg, $Throwable* exp) {
 	$init(ScriptEngineManager);
 	$useLocalCurrentObjectStackCache();
-	$init($System);
 	$nc($System::err)->println($$str({msg, $($nc(exp)->getMessage())}));
 	debugPrint(exp);
 }
@@ -576,8 +556,7 @@ $ScriptEngine* ScriptEngineManager::lambda$getEngineBy$2($ScriptEngineFactory* s
 		$var($ScriptEngine, engine, $nc(spi)->getScriptEngine());
 		$nc(engine)->setBindings($(getBindings()), $ScriptContext::GLOBAL_SCOPE);
 		return engine;
-	} catch ($Exception&) {
-		$var($Exception, exp, $catch());
+	} catch ($Exception& exp) {
 		debugPrint(exp);
 		return nullptr;
 	}
@@ -586,12 +565,10 @@ $ScriptEngine* ScriptEngineManager::lambda$getEngineBy$2($ScriptEngineFactory* s
 
 bool ScriptEngineManager::lambda$getEngineBy$1($Function* valuesFn, $String* selector, $ScriptEngineFactory* spi) {
 	$init(ScriptEngineManager);
-	$useLocalCurrentObjectStackCache();
 	try {
 		$var($List, matches, $cast($List, $nc(valuesFn)->apply(spi)));
 		return matches != nullptr && matches->contains(selector);
-	} catch ($Exception&) {
-		$var($Exception, exp, $catch());
+	} catch ($Exception& exp) {
 		debugPrint(exp);
 		return false;
 	}

@@ -4,21 +4,9 @@
 #include <java/io/InputStream.h>
 #include <java/io/InputStreamReader.h>
 #include <java/io/OutputStream.h>
-#include <java/io/PrintStream.h>
 #include <java/io/PrintWriter.h>
 #include <java/io/Reader.h>
 #include <java/io/Writer.h>
-#include <java/lang/Class.h>
-#include <java/lang/ClassInfo.h>
-#include <java/lang/FieldInfo.h>
-#include <java/lang/IllegalArgumentException.h>
-#include <java/lang/Integer.h>
-#include <java/lang/MethodInfo.h>
-#include <java/lang/NullPointerException.h>
-#include <java/lang/String.h>
-#include <java/lang/System.h>
-#include <java/lang/reflect/Constructor.h>
-#include <java/lang/reflect/Method.h>
 #include <java/util/List.h>
 #include <java/util/Objects.h>
 #include <javax/script/Bindings.h>
@@ -100,7 +88,6 @@ $List* SimpleScriptContext::scopes = nullptr;
 
 void SimpleScriptContext::init$() {
 	$useLocalCurrentObjectStackCache();
-	$init($System);
 	$var($Reader, var$0, static_cast<$Reader*>($new($InputStreamReader, $System::in)));
 	$var($Writer, var$1, static_cast<$Writer*>($new($PrintWriter, static_cast<$OutputStream*>($System::out), true)));
 	SimpleScriptContext::init$(var$0, var$1, $$new($PrintWriter, static_cast<$OutputStream*>($System::err), true));
